@@ -17,19 +17,24 @@ tokens
 LCURLY : '{';
 RCURLY : '}';
 
-ID  :
-  [LETRA][LETRA | NUMERO]*;
+ID : [a-zA-Z_] [a-zA-Z_0-9]* ;
 
-WS_ : [' ' | '\n' ] -> skip;
+WS_ : (' ' | '\n' ) -> skip;
 
 SL_COMMENT : '//' (~'\n')* '\n' -> skip;
 
-CHAR : '\'' [ESC|LETRA|NUMERO|OUTROS] '\'';
-STRING : '"' [ESC|LETRA|NUMERO]+ '"';
+CHAR : '\'' (ESC|LETRA|NUMERO|OUTROS) '\'';
+STRING : '"' (ESC|LETRA|NUMERO|OUTROS)* '"';
 
 fragment
-ESC :  '\\'['n'|'t'|'"'|'\\'|'.'|'?'];
-OUTROS: ['!'|'#'|'$'|'@'|'&'];
-LETRA: [a-z]|[A-Z];
+ESC : '\\' ('n'|'"'|'t'|'\\'|'\'');
+
+fragment
+OUTROS: [(-/!#-&{-~:-@^-`];
+
+fragment
+LETRA: [a-zA-Z\u0080-\u00FF_ ];
+
+fragment
 NUMERO: [0-9];
 
