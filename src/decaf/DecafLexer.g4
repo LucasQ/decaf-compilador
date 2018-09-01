@@ -14,27 +14,49 @@ tokens
   TK_class
 }
 
-LCURLY : '{';
-RCURLY : '}';
+ABREPARENTESES: '(';
+FECHAPARENTESES: ')';
+ABRECHAVE: '{';
+FECHACHAVE: '}';
+COLCHETE: ('['|']');
 
-ID : [a-zA-Z_] [a-zA-Z_0-9]* ;
+CONTINUE: 'continue';
+BREAK: 'break';
+BOOLEAN: 'boolean';
+BOOLEANLITERAL: ('false'|'true');
+CALLOUT: 'callout';
+CLASS: 'class';
+ELSE: 'else';
+FALSE: 'false';
+IF: 'if';
+INT: 'int';
+RETURN: 'return';
+VOID: 'void';
+FOR: 'for';
 
-WS_ : (' ' | '\n' ) -> skip;
 
-SL_COMMENT : '//' (~'\n')* '\n' -> skip;
+ID: [a-zA-Z_] [a-zA-Z_0-9]* ;
 
-CHAR : '\'' (ESC|LETRA|NUMERO|OUTROS) '\'';
-STRING : '"' (ESC|LETRA|NUMERO|OUTROS)* '"';
+WS_: (' ' | '\n' ) -> skip;
+
+SL_COMMENT: '//' (~'\n')* '\n' -> skip;
+
+CHAR: '\'' (ESC|LETRA|NUMERAL|OUTROS) '\'';
+STRING: '"' (ESC|LETRA|NUMERAL|OUTROS)* '"';
+OPERADORES: ('+'|'-'|'*'|'<'|'<='|'!='|'&&');
+NUMBER: (NUMERAL)+;
 
 fragment
-ESC : '\\' ('n'|'"'|'t'|'\\'|'\'');
+ESC: '\\' ('n'|'"'|'t'|'\\'|'\'');
 
 fragment
-OUTROS: [(-/!#-&{-~:-@^-`];
+OUTROS: [(-/!|#-&|{-~|:-@|^-`];
 
 fragment
 LETRA: [a-zA-Z\u0080-\u00FF_ ];
 
 fragment
-NUMERO: [0-9];
+NUMERAL: [0-9];
+
+
 
