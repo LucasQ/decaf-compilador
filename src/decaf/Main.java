@@ -34,22 +34,33 @@ class Main {
 		        			case DecafLexer.ID:
 		        			type = " IDENTIFIER";
 		        			break; 
-
                             case DecafLexer.CHAR:
 							type = " CHARLITERAL";
 							break;
-
                             case DecafLexer.STRING:
                       		type = " STRINGLITERAL";
 							break;	
-
 							case DecafLexer.BOOLEANLITERAL:
-		        			type = " BOOLEANLITERAL";
+		        				type = " BOOLEANLITERAL";
 							break;
-							
+
 							case DecafLexer.NUMBER:
-		        			type = " INTLITERAL";
-							break;
+		        				type = " INTLITERAL";
+                            break;
+							/*case DecafLexer.INT:
+							case DecafLexer.FALSE:
+							case DecafLexer.BOOLEAN:
+							case DecafLexer.CLASS:
+							case DecafLexer.CALLOUT:
+							case DecafLexer.IF:
+							case DecafLexer.ELSE:
+							case DecafLexer.FOR:
+							case DecafLexer.VOID:
+							case DecafLexer.RETURN:
+							case DecafLexer.BREAK:
+							case DecafLexer.CONTINUE:
+								type = "";
+							break;*/
 		        			}
 		        			System.out.println (token.getLine() + type + " " + text);
 		        		}
