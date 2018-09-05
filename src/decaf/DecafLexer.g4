@@ -34,7 +34,6 @@ BREAK : 'break';
 CONTINUE : 'continue';
 
 
-
 WS_: (' '|'\n'|'\t' ) -> skip;
 
 SL_COMMENT: '//' (~'\n')* '\n' -> skip;
@@ -45,6 +44,8 @@ STRING: '"' (ESC|LETRA|NUMERAL|OUTROS)* '"';
 OPERADORES: (CONDICIONAL|OP);
 NUMBER: (NUMERAL)+;
 ALL : (OPERADORES|','|';'|'|'|CONDICIONAL);
+ONLY0X: '0x';
+HEXA : '0x'(NUMERAL|LETRA)+;
 
 fragment
 ESC: '\\' ('n'|'"'|'t'|'\\'|'\'');

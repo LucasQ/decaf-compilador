@@ -28,18 +28,22 @@ class Main {
 		        		{
 		        			String type = "";
 		        			String text = token.getText();
+							int count = 0;
 
 		        			switch (token.getType())
 		        			{
 		        			case DecafLexer.ID:
 		        			type = " IDENTIFIER";
 		        			break; 
+
                             case DecafLexer.CHAR:
 							type = " CHARLITERAL";
 							break;
+							
                             case DecafLexer.STRING:
                       		type = " STRINGLITERAL";
 							break;	
+
 							case DecafLexer.BOOLEANLITERAL:
 		        				type = " BOOLEANLITERAL";
 							break;
@@ -47,22 +51,23 @@ class Main {
 							case DecafLexer.NUMBER:
 		        				type = " INTLITERAL";
                             break;
-							/*case DecafLexer.INT:
-							case DecafLexer.FALSE:
-							case DecafLexer.BOOLEAN:
-							case DecafLexer.CLASS:
-							case DecafLexer.CALLOUT:
-							case DecafLexer.IF:
-							case DecafLexer.ELSE:
-							case DecafLexer.FOR:
-							case DecafLexer.VOID:
-							case DecafLexer.RETURN:
-							case DecafLexer.BREAK:
-							case DecafLexer.CONTINUE:
-								type = "";
-							break;*/
+
+							case DecafLexer.HEXA:
+		        				type = " INTLITERAL";
+							break;
+
+							case DecafLexer.ONLY0X:
+     							count = 1;
+							break;	 						    
 		        			}
-		        			System.out.println (token.getLine() + type + " " + text);
+
+		        			if(count==0){
+								System.out.println (token.getLine() + type + " " + text);
+							}else{
+								System.out.println("hexlit3 line 2:3: unexpected char: 0xA");
+								count = 0;
+							}
+							
 		        		}
 		        		done = true;
         			} catch(Exception e) {
