@@ -13,13 +13,14 @@ tokens
 {
   TK_class
 }
+LCURLY: '{';
+RCURLY: '}';
 
-FABREPARENTESES: '(';
+ABREPARENTESES: '(';
 FECHAPARENTESES: ')';
-ABRECHAVE: '{';
-FECHACHAVE: '}';
 COLCHETE: ('['|']');
 
+PROGRAM: 'Program';
 BOOLEAN : 'boolean';
 CALLOUT : 'callout';
 CLASS : 'class';
@@ -33,12 +34,11 @@ FOR : 'for';
 BREAK : 'break';
 CONTINUE : 'continue';
 
-
 WS_: (' '|'\n'|'\t' ) -> skip;
 
 SL_COMMENT: '//' (~'\n')* '\n' -> skip;
 
-ID: [a-zA-Z_] [a-zA-Z_0-9]* ;
+ID: [a-zA-Z_] [a-zA-Z_0-9] *;
 CHAR: '\'' (ESC|LETRA|NUMERAL|OUTROS) '\'';
 STRING: '"' (ESC|LETRA|NUMERAL|OUTROS)* '"';
 OPERADORES: (CONDICIONAL|OP);
