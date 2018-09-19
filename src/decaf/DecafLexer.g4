@@ -16,8 +16,8 @@ tokens
 LCURLY: '{';
 RCURLY: '}';
 
-ABREPARENTESES: '(';
-FECHAPARENTESES: ')';
+ABREPARENTESE: '(';
+FECHAPARENTESE: ')';
 COLCHETE: ('['|']');
 
 PROGRAM: 'Program';
@@ -33,6 +33,7 @@ VOID : 'void';
 FOR : 'for';
 BREAK : 'break';
 CONTINUE : 'continue';
+TYPE: 'boolean' | 'int';
 
 WS_: (' '|'\n'|'\t' ) -> skip;
 
