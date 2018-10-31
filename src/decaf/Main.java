@@ -5,6 +5,8 @@ import java.io.*;
 import java.util.Arrays;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.awt.Dimension;
+import javax.swing.JScrollPane;
 
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.ANTLRInputStream;
@@ -146,9 +148,10 @@ class Main {
 					//show AST in GUI
 					JFrame frame = new JFrame("Antlr AST");
 					JPanel panel = new JPanel();
+					JScrollPane scroll = new JScrollPane();
 					TreeViewer viewr = new TreeViewer(Arrays.asList(
 							parser.getRuleNames()),tree);
-					viewr.setScale(1.5);//scale a little
+					viewr.setScale(1.5);
 					panel.add(viewr);
 					frame.add(panel);
 					frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

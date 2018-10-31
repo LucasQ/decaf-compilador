@@ -11,7 +11,7 @@ options
 }
 program: CLASS PROGRAM ABRECHAVE field_decl* method_decl* FECHACHAVE;
 
-field_decl : ( type ID | type ID LCOLCHETE int_literal+ RCOLCHETE( V ( type ID LCOLCHETE int_literal RCOLCHETE | type ID ))*) PV;
+field_decl : ( type ID | type ID LCOLCHETE integer + RCOLCHETE( V ( type ID LCOLCHETE integer RCOLCHETE | type ID ))*) PV;
 
 method_decl : (type | VOID) ID AP ( type ID (V type ID)*)* FP block;
 
@@ -48,10 +48,10 @@ callout_arg : expr | strings;
 call_arg : (expr | STRING);
 
 bin_op : (ARITH_OP | REL_OP | EQ_OP | COND_OP);
-literal : (int_literal | char_literal | bool_literal);
+literal : (integer | char_literal | bool_literal);
 
 type:  INT | BOOLEAN;
-int_literal : (NUMBER | HEXA);
+integer : (NUMBER | HEXA);
 strings: STRING*;
 bool_literal : BOOLEANLITERAL;
 char_literal : CHAR;
