@@ -19,6 +19,7 @@ block : ABRECHAVE var_decl* statement* FECHACHAVE;
 
 var_decl : type ID (V ID)* PV;
 
+
 statement : (location assign_op expr PV 
 			| method_call PV
 			| IF (expr) block (ELSE block)? 
