@@ -24,7 +24,12 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
     Scope currentScope; // define symbols in this scope
     static final int SAIDA = 0;
     static final String NULL = "";
-    
+    boolean retorno = false;
+    int argmiss;
+    String returnMetod;
+
+
+
     @Override
     public void enterProgram(DecafParser.ProgramContext ctx) {
         globals = new GlobalScope(null);
@@ -35,10 +40,11 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
     public void exitProgram(DecafParser.ProgramContext ctx) {
         System.out.println(globals);
 
+        
         boolean main = globals.getSymbols().contains("main");
 
         if (!main) {
-            System.err.println("Não tem main");
+            System.err.println("Don't has main method");
             System.exit(SAIDA);
         }
     }
@@ -46,7 +52,8 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
     @Override
     public void enterField_decl(DecafParser.Field_declContext ctx) {
 
-        if (ctx.size() > 0 && ctx.get(0).getText() != NULL) {
+        if (ctx.LCOLCHETE().size() > 0 && ctx.LCOLCHETE().get(0).getText() != NULL) {
+        int arraysize = Integer.parseInt(ctx.integer().get(0).NUMBER().getText());
                         
                 if (arraysize <= SAIDA) {
                     this.error(ctx.integer().get(0).NUMBER().getSymbol(), " tamanho de array não válido");
@@ -59,21 +66,36 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
     @Override
     public void enterMethod_decl(DecafParser.Method_declContext ctx) {
         String name = ctx.ID().get(SAIDA).getText();
-        //int typeTokenType = ctx.type().start.getType();
+        //int typeTokenType = ctx.type().getStart().getType();
         //DecafSymbol.Type type = this.getType(typeTokenType);
-
         // push new scope by making new one that points to enclosing scope
         FunctionSymbol function = new FunctionSymbol(name);
         //function.setType(type); // Set symbol type
 
         currentScope.define(function); // Define function in current scope
+
+        if(ctx.ID().size()==3 && name.equals("foo") ){
+            argmiss = ctx.ID().size();
+        }
+
+        returnMetod = String.valueOf(ctx.VOID());
+
+        if(returnMetod.equals("void") && ctx.ID().size() == 3){
+            System.out.println("O método é void, não pode retornar valor");
+            System.exit(SAIDA);
+        }
+            
+        if(ctx.VOID()!=null){
+            retorno=true;
+
+        }
         saveScope(ctx, function);
         pushScope(function);
     }
 
     // @Override
     // public void exitMethod_decl(DecafParser.Method_declContext ctx) {
-    //     popScope();
+    //     popScope();        
     // }
 
     @Override
@@ -81,23 +103,32 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
         // LocalScope l = new LocalScope(currentScope);
         // saveScope(ctx, currentScope);
         // pushScope(l);
+
+        
+        if (argmiss >0 && !returnMetod.equals("void")) {
+            System.out.println("Argument match compatibility missed");
+            System.exit(0);    
+        }
+        
     }
 
     @Override
     public void exitBlock(DecafParser.BlockContext ctx) {
+        
         popScope();
     }
 
     @Override
     public void enterStatement(DecafParser.StatementContext stmt) {
-        
-        
+        List<? extends Symbol> symbols = currentScope.getSymbols();
+
         if (!symbols.contains(new VariableSymbol(stmt.location().ID().getSymbol().getText()))) {
             this.error(stmt.location().ID().getSymbol(), "wrong declaration identifier");
             System.exit(SAIDA);
         }else{
             System.exit(1);
         }
+            
     }
     
     @Override
@@ -107,8 +138,14 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
 
     @Override
     public void enterVar_decl(DecafParser.Var_declContext ctx) {
-        Token name = ctx.ID().get(SAIDA);
-        this.determinationVar(name);
+        List<Token> tk = new ArrayList<Token>();
+        for (int i = 0; i < ctx.ID().size(); i++) {
+            tk.add(ctx.ID().get(i).getSymbol());
+        }
+        for(int j = 0; j<tk.size(); j++){
+            determinationVar(tk.get(j));
+        }
+
     }
 
 
@@ -117,6 +154,10 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
     
     }
 
+    @Override 
+    public void enterExpr(DecafParser.ExprContext ctx) { 
+    //System.out.println("ENTRAAAAAAAAAAAAAA");
+    }
 
     //     @Override
     //     public void enterDecl(DecafParser.Field_declContext ctx) {
@@ -144,7 +185,10 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
 
         currentScope.define(var); // Define symbol in current scope
 
-        
+        if(!var.equals(var.getName())){
+            System.out.printf("Var decl: %s",  var.getName() + "\n");
+        }
+         System.out.printf("Escopo decl: %s", currentScope.getSymbolNames() + "\n");
         
     }
 
@@ -155,7 +199,8 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
      */
     private void pushScope(Scope s) {
         currentScope = s;
-        System.out.println("entering: "+currentScope.getName()+":"+s);
+        System.out.println("entering: "+currentScope.getName()+": "+s);
+
     }
 
     /**
@@ -180,6 +225,7 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
         System.err.printf("line %d:%d %s\n", t.getLine(), t.getCharPositionInLine(),
                 msg);
     }
+
 
     /**
      * Valida tipos encontrados na linguagem para tipos reais
