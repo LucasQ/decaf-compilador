@@ -22,7 +22,7 @@ var_decl : type ID (V ID)* PV;
 
 statement : (location assign_op expr PV 
 			| method_call PV
-			| IF (expr) block (ELSE block)? 
+			| IF expr block (ELSE block)*
 			| FOR ID IGUAL expr V expr block
 			| RETURN (expr)* PV
 			| BREAK PV

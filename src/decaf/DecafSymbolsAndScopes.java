@@ -121,7 +121,14 @@ public class DecafSymbolsAndScopes extends DecafParserBaseListener {
     @Override
     public void enterStatement(DecafParser.StatementContext stmt) {
         List<? extends Symbol> symbols = currentScope.getSymbols();
-
+        if (stmt.IF() != null) {
+            System.out.println("A condição deve retornar um boolean");
+            System.exit(SAIDA);
+        }
+        if (stmt.FOR() != null) {
+            System.out.println("Condição inicial deve ser um inteiro");
+            System.exit(0);
+        }
         if (!symbols.contains(new VariableSymbol(stmt.location().ID().getSymbol().getText()))) {
             this.error(stmt.location().ID().getSymbol(), "wrong declaration identifier");
             System.exit(SAIDA);
